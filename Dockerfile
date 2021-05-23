@@ -59,7 +59,7 @@ RUN		mv mkcert-v1.4.2-linux-amd64 mkcert && chmod +x /mkcert && /mkcert -install
 
 RUN		rm var/www/html/index.html && rm var/www/html/index.nginx-debian.html
 ADD		/srcs/index.html /var/www/html/
-ADD		/srcs/script.sh ./
+#ADD		/srcs/script.sh ./
 ADD		./srcs/config.inc.php ./tmp/config.inc.php
 
 ## Start service ##
