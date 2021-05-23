@@ -17,13 +17,17 @@ RUN		apt-get update -y && apt-get upgrade -y && apt-get clean -y
 
 ## Install & set-up php & phpMyAdmin/mariadb ##
 
-RUN		mkdir -p /downloads
-RUN		mkdir -p /var/www/html/phpmyadmin
-ADD		https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-english.tar.gz /downloads/
-RUN		tar xvf /downloads/phpMyAdmin-5.1.0-english.tar.gz --strip-components=1 -C /var/www/html/phpmyadmin
 RUN		apt-get install php php-mysql -y
-RUN		apt-get install php7.3 php7.3-fpm php7.3-mysql php-mbstring -y
+RUN		apt-get install php7.3 php7.3-fpm php7.3-mysql php-mbstring php-xml -y
 RUN		apt-get install mariadb-server mariadb-client -y
+
+RUN		mkdir -p /var/www/html/phpmyadmin
+ADD		https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-english.tar.gz ./
+RUN		tar -xzvf phpMyAdmin-5.1.0-english.tar.gz
+RUN		mv phpMyAdmin-5.1.0-english var/www/html/phpMyAdmin
+RUN		rm phpMyAdmin-5.1.0-english.tar.gz
+#RUN		chmod 777 /var/www/html/phpMyAdmin/tmp
+
 COPY	srcs/config.inc.php /var/www/html/phpmyadmin/config.inc.php
 ADD		./srcs/db.sql .
 RUN		service mysql start && cat < db.sql | mariadb -u root
